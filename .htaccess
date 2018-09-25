@@ -1,6 +1,6 @@
 # Rewrite to get a pretty REST-URL.
   RewriteEngine On
-  RewriteRule ^Fiskbil$ Fiskbil.php
-  RewriteRule ^Fiskbil/$ Fiskbil.php [NC,L]
-  RewriteRule ^Fiskbil/([0-9]+)/?$ Fiskbil.php?id=$1 [NC,L]
-  RewriteRule ^Fiskbil/([a-zA-Z0-9]/_/-]+)/?$ Fiskbil.php?title=$1
+  RewriteRule ^fiskbil$ fiskbil.php
+  RewriteRule ^fiskbil/$ fiskbil.php [NC,L]
+  RewriteRule ^fiskbil/([0-9]+)/?$ fiskbil.php?id=$1 [NC,L]
+  RewriteRule ^fiskbil/([a-zA-Z0-9]/_/-]+)/?$ fiskbil.php?fisksort=$1

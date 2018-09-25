@@ -1,7 +1,25 @@
 <?php
     // Fixing å, ä, ö in the result
     // header('Content-Type: application/json');
-    // lyckas ej med htacess rewrite-kolla med Hans
+
+    
+    // G-krav
+    // kolla sista if is null, funkar den?
+    // Lista alla produkter - JA
+    // Lista enskilda produkter - JA t ex id=1
+    // Lista vissa produkter - JA med limit, t ex limit=3
+    // Lista bara kategorier - NEJ
+    // Sortera - JA t ex ?sort=pris&DESC
+    // htaccess - JA t ex http://localhost:8888/_PHP/_Laborationer/Labb03/fiskbil/1
+    //                    http://localhost:8888/_PHP/_Laborationer/Labb03/fiskbil/
+    //                    http://localhost:8888/_PHP/_Laborationer/Labb03/fiskbil
+    //                    http://localhost:8888/_PHP/_Laborationer/Labb03/fiskbil.php?fisksort=torsk
+
+    // VG-krav
+    // POST data - JA
+    // PUT data - NEJ
+    // DELETE data - NEJ
+    // API-nyckel i URI - NEJ
 
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
@@ -54,12 +72,27 @@
         echo $result;
 
     }
+
+    // Delete data
+    if(isset($_DELETE['fisksort'])){
+        $stmt = $dbh->prepare("
+            DELETE FROM Fisk WHERE " . $_GET["id"]);
+        
+        // if ($stmt->execute([':id' => $idString])){
+        //     header("Location: http://localhost:8888/_PHP/_Laborationer/Labb03/fiskbil.php");
+        // }
+    }
+
     else {
         // Checking for numeric id value
         if(is_numeric($_GET["id"])){
             $idString = "Fisk.id = " . $_GET["id"];
         }
-
+        
+        // rewrite functionality, URI example: ?fisksort=torsk
+        if (isset($_GET['fisksort'])){
+            $idString = "fisksort LIKE '" . $_GET['fisksort'] . "%'";
+        }
 
         // Preparing SQL query
         $stmt = $dbh->prepare("
@@ -84,7 +117,7 @@
     }
     if(is_null($result)){
         $result = [
-            "DEt finns ingen fisk som matchar din sökning. Försök igen." . $_GET['id'] . $_GET['title']
+            "Det finns ingen fisk som matchar din sökning. Försök igen." . $_GET['id'] . $_GET['title']
         ];
     }
 
