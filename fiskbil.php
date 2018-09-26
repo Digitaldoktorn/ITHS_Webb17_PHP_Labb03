@@ -3,7 +3,7 @@
     // header('Content-Type: application/json');
 
     
-    // G-krav
+    // G-krav:
     // kolla sista if is null, funkar den?
     // Lista alla produkter - JA
     // Lista enskilda produkter - JA t ex id=1
@@ -15,10 +15,10 @@
     //                    http://localhost:8888/_PHP/_Laborationer/Labb03/fiskbil
     //                    http://localhost:8888/_PHP/_Laborationer/Labb03/fiskbil.php?fisksort=torsk
 
-    // VG-krav
+    // VG-krav:
     // POST data - JA
     // PUT data - NEJ
-    // DELETE data - NEJ
+    // DELETE data - JA
     // API-nyckel i URI - NEJ
 
     ini_set('display_errors', 1);
@@ -70,17 +70,32 @@
         }
         $result = json_encode($result);
         echo $result;
-
     }
 
     // Delete data
-    if(isset($_DELETE['fisksort'])){
+    if($_SERVER['REQUEST_METHOD'] == 'DELETE'){
         $stmt = $dbh->prepare("
-            DELETE FROM Fisk WHERE " . $_GET["id"]);
+        DELETE FROM Fisk WHERE id =" . $_GET['id']);
         
-        // if ($stmt->execute([':id' => $idString])){
-        //     header("Location: http://localhost:8888/_PHP/_Laborationer/Labb03/fiskbil.php");
-        // }
+        if ($stmt->execute()){
+            echo "Post raderad";
+        }
+    }
+    // Update data
+    if($_SERVER['REQUEST_METHOD'] == 'PUT'){
+        // $stmt = $dbh->prepare("
+        // UPDATE Fisk SET fisksort=:fisksort, pris=:pris, fetthalt=:fetthalt, zon=:zon WHERE id =" . $_GET['id']);
+        $stmt = $dbh->prepare("
+        UPDATE Fisk SET :fisksort WHERE id =" . $_GET['id']);
+
+        $stmt->bindParam(":fisksort", $_POST['fisksort']);
+        // $stmt->bindParam(":pris", $_POST['pris']);
+        // $stmt->bindParam(":fetthalt", $_POST['fetthalt']);
+        // $stmt->bindParam(":zon", $_POST['zon']);
+        
+        if ($stmt->execute()){
+            echo "Post uppdaterad";
+        }
     }
 
     else {
