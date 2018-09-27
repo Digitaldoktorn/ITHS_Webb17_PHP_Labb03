@@ -4,11 +4,9 @@
 
     
     // G-krav:
-    // kolla sista if is null, funkar den?
     // Lista alla produkter - JA
     // Lista enskilda produkter - JA t ex id=1
     // Lista vissa produkter - JA med limit, t ex limit=3
-    // Lista bara kategorier - NEJ
     // Sortera - JA t ex ?sort=pris&DESC
     // htaccess - JA t ex http://localhost:8888/_PHP/_Laborationer/Labb03/fiskbil/1
     //                    http://localhost:8888/_PHP/_Laborationer/Labb03/fiskbil/
@@ -81,13 +79,13 @@
             echo "Post raderad";
         }
     }
-    // Update data
+
+    // Update data - FUNKAR EJ!
     if($_SERVER['REQUEST_METHOD'] == 'PUT'){
         // $stmt = $dbh->prepare("
         // UPDATE Fisk SET fisksort=:fisksort, pris=:pris, fetthalt=:fetthalt, zon=:zon WHERE id =" . $_GET['id']);
         $stmt = $dbh->prepare("
         UPDATE Fisk SET :fisksort WHERE id =" . $_GET['id']);
-
         $stmt->bindParam(":fisksort", $_POST['fisksort']);
         // $stmt->bindParam(":pris", $_POST['pris']);
         // $stmt->bindParam(":fetthalt", $_POST['fetthalt']);
@@ -132,7 +130,7 @@
     }
     if(is_null($result)){
         $result = [
-            "Det finns ingen fisk som matchar din sökning. Försök igen." . $_GET['id'] . $_GET['title']
+            "Ingen matchning. Prova igen." . $_GET['id'] . $_GET['title']
         ];
     }
 
